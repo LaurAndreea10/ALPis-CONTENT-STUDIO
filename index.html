@@ -143,6 +143,22 @@ input[type=color]{border:none;border-radius:6px;cursor:pointer;background:transp
 .ad-card-header{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
 .ad-card-body{padding:16px}
 .ad-card-cta{padding:12px 14px;border-top:1px solid var(--border)}
+
+/* Lazy Content Generator */
+.lazy-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+.lazy-card{padding:18px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.015));border:1px solid var(--border)}
+.lazy-hero{background:radial-gradient(circle at top right,rgba(255,51,102,0.12),transparent 35%),radial-gradient(circle at bottom left,rgba(167,139,250,0.12),transparent 30%),rgba(255,255,255,0.02)}
+.lazy-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--t2);cursor:pointer;transition:all .15s ease;text-align:left}
+.lazy-option:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.14)}
+.lazy-option.on{border-color:rgba(255,51,102,0.35);background:rgba(255,51,102,0.08);color:#fff;box-shadow:0 12px 30px rgba(255,51,102,0.08)}
+.lazy-option .emo{font-size:24px}
+.lazy-mini{font-size:10px;color:var(--t4);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase}
+.lazy-output{min-height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.lazy-post{padding:18px;border-radius:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-left:3px solid var(--accent);white-space:pre-wrap;line-height:1.8;color:var(--t2);font-size:15px}
+.lazy-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.lazy-badge{padding:7px 11px;border-radius:999px;background:rgba(255,255,255,0.04);font-size:11px;color:var(--t3);font-family:var(--mono)}
+@media(max-width:900px){.lazy-shell{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -271,6 +287,7 @@ const NAV = [
   {id:"_sec",label:"CONȚINUT"},
   {id:"adapt",icon:"✦",label:"Adaptare Text"},
   {id:"caption",icon:"≡",label:"Captions"},
+  {id:"lazygen",icon:"⚡",label:"Lazy Content Generator"},
   {id:"hashtag",icon:"#",label:"Hashtag-uri"},
   {id:"bio",icon:"◈",label:"Bio Generator"},
   {id:"cta",icon:"▷",label:"CTA Generator"},
@@ -330,6 +347,8 @@ let videoSections = [
 let videoGenerated = null;
 let aiGenImages = [];
 let generatedAds = [];
+let lazyCategory = "funny";
+let lazyGenerated = null;
 
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 
@@ -366,7 +385,7 @@ function toggleSidebar(){document.getElementById("sidebar").classList.toggle("op
 function renderView(){
   const m=document.getElementById("main");
   const renders={adapt:renderAdapt,image:renderImage,imggen:renderImgGen,thumb:renderThumb,hashtag:renderHashtag,
-    caption:renderCaption,preview:renderPreview,video:renderVideo,bio:renderBio,
+    caption:renderCaption,lazygen:renderLazyGenerator,preview:renderPreview,video:renderVideo,bio:renderBio,
     palette:renderPalette,schedule:renderSchedule,analyze:renderAnalyze,
     emoji:renderEmoji,ab:renderAB,cta:renderCTA,repurpose:renderRepurpose,ads:renderAds,
     invite:renderInvite,flyer:renderFlyer,banner:renderBanner,prez:renderPrez,
@@ -875,6 +894,131 @@ function genCaptions(){
       <div style="flex:1;font-size:13px;color:var(--t2);line-height:1.6;white-space:pre-wrap">${esc(c)}</div>
       <button class="btn btn-sm btn-sec" onclick="copyText(\`${esc(c).replace(/`/g,"\\`")}\`)">◫</button>
     </div>`).join("")}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 6. LAZY CONTENT GENERATOR
+// ═══════════════════════════════════════════════════════════════
+function renderLazyGenerator(){
+  const categories=[
+    {id:"funny",emoji:"😂",title:LANG==="en"?"Funny":"Funny",sub:LANG==="en"?"Memes, relatable lines, small chaos":"Glume, replici relatable, puțin haos"},
+    {id:"motivational",emoji:"✨",title:LANG==="en"?"Motivational":"Motivational",sub:LANG==="en"?"Energy boosts, mindset, small wins":"Boost de energie, mindset, small wins"},
+    {id:"chaos",emoji:"🌀",title:LANG==="en"?"Random chaos":"Random chaos 😄",sub:LANG==="en"?"Unexpected, weird, scroll-stopping":"Ciudat, spontan, scroll-stopping"}
+  ];
+
+  return title("⚡","#a78bfa","Lazy Content Generator",LANG==="en"?"Click Generate when you have no idea what to post today":"Când nu știi ce să postezi azi, apeși Generate")+`
+  <div class="lazy-shell">
+    <div class="lazy-card lazy-hero">
+      <div style="font-size:12px;font-family:var(--mono);color:var(--purple);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">${LANG==="en"?"Instant ideas":"Idei instant"}</div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1.1;max-width:520px">${LANG==="en"?"No plan. No brief. Just a post idea in one click.":"Fără plan. Fără brief. Doar o idee de post dintr-un click."}</div>
+      <div style="font-size:13px;color:var(--t3);line-height:1.7;max-width:560px;margin-top:10px">${LANG==="en"?"Choose a vibe, hit Generate, and get a ready-to-post combo with text, emoji, and hashtags.":"Alegi vibe-ul, apeși Generate și primești un combo gata de postat: text, emoji și hashtag-uri."}</div>
+
+      <div class="label" style="margin-top:18px">${LANG==="en"?"Categories":"Categorii"}</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${categories.map(cat=>`
+          <button class="lazy-option ${lazyCategory===cat.id?"on":""}" onclick="setLazyCategory('${cat.id}',this)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="emo">${cat.emoji}</span>
+              <div>
+                <div style="font-size:15px;font-weight:700">${cat.title}</div>
+                <div style="font-size:12px;color:var(--t4)">${cat.sub}</div>
+              </div>
+            </div>
+            <span class="lazy-mini">${LANG==="en"?"tap":"click"}</span>
+          </button>
+        `).join("")}
+      </div>
+
+      <div class="row" style="margin-top:18px">
+        <button class="btn btn-purple" onclick="generateLazyContent()">⚡ ${LANG==="en"?"Generate":"Generate"}</button>
+        <button class="btn btn-sec" onclick="generateLazyContent(true)">↻ ${LANG==="en"?"Another one":"Încă una"}</button>
+      </div>
+    </div>
+
+    <div class="lazy-card">
+      <div class="lazy-output" id="lazyOutput">${renderLazyOutput()}</div>
+    </div>
+  </div>`;
+}
+
+function renderLazyOutput(){
+  if(!lazyGenerated){
+    return `
+      <div>
+        <div style="font-size:12px;font-family:var(--mono);color:var(--pink);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">${LANG==="en"?"Output":"Output"}</div>
+        <div class="ai-gen-area" style="margin:0">
+          <div class="ai-icon">🪄</div>
+          <div class="ai-title">${LANG==="en"?"Hit Generate to get a fresh post idea":"Apasă Generate ca să primești o idee de postare"}</div>
+          <div class="ai-sub">${LANG==="en"?"You will get text + emoji + hashtag":"Primești text + emoji + hashtag"}</div>
+        </div>
+      </div>`;
+  }
+
+  const {title,text,emoji,hashtags,category}=lazyGenerated;
+  const bundle=`${title} ${emoji}
+
+${text}
+
+${hashtags.join(" ")}`;
+  return `
+    <div>
+      <div class="row-sb" style="margin-bottom:14px">
+        <div>
+          <div style="font-size:12px;font-family:var(--mono);color:var(--pink);letter-spacing:1.5px;text-transform:uppercase">${LANG==="en"?"Generated idea":"Idee generată"}</div>
+          <div style="font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-top:6px">${title} <span style="opacity:.85">${emoji}</span></div>
+        </div>
+        <span class="lazy-badge">${category}</span>
+      </div>
+
+      <div class="lazy-post">${text}</div>
+
+      <div class="lazy-badges">
+        <span class="lazy-badge">${emoji}</span>
+        ${hashtags.map(tag=>`<span class="lazy-badge">${tag}</span>`).join("")}
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <button class="btn btn-primary" onclick="copyText(\`${'${esc(bundle).replace(/`/g,"\`")}'}\`)">◫ ${LANG==="en"?"Copy all":"Copiază tot"}</button>
+      <button class="btn btn-sec" onclick="generateLazyContent(true)">⚡ ${LANG==="en"?"Regenerate":"Generează din nou"}</button>
+    </div>`;
+}
+
+function setLazyCategory(cat,el){
+  lazyCategory=cat;
+  el.parentElement.querySelectorAll('.lazy-option').forEach(btn=>btn.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function generateLazyContent(force){
+  const bank={
+    funny:[
+      {title:LANG==="en"?"I was productive for 7 minutes":"Azi am fost productiv 7 minute",emoji:"😂",text:LANG==="en"?"My to-do list saw me open one tab and decided that was enough for today.":"To-do list-ul meu m-a văzut că am deschis un tab și a decis că pentru azi e suficient.",hashtags:["#funnypost","#relatable","#creatorlife"]},
+      {title:LANG==="en"?"Main character energy, low battery edition":"Main character energy, varianta low battery",emoji:"🤡",text:LANG==="en"?"I said 'let's be consistent' and then disappeared like a limited story highlight.":"Am zis «gata, devin constant» și apoi am dispărut ca un story highlight uitat.",hashtags:["#mood","#socialmediahumor","#dailychaos"]},
+      {title:LANG==="en"?"Very busy doing absolutely nothing":"Foarte ocupat să nu fac nimic",emoji:"😅",text:LANG==="en"?"Some days the only content strategy is surviving the group chat and finding coffee.":"Uneori singura strategie de content e să supraviețuiești grupului de WhatsApp și să găsești cafea.",hashtags:["#funnycontent","#coffeefirst","#tooreal"]}
+    ],
+    motivational:[
+      {title:LANG==="en"?"Small win, big energy":"Mic win, energie mare",emoji:"✨",text:LANG==="en"?"You do not need a perfect plan today. One tiny move is enough to restart your momentum.":"Nu ai nevoie azi de un plan perfect. Un pas mic e suficient ca să-ți repornești energia.",hashtags:["#motivation","#smallsteps","#keepgoing"]},
+      {title:LANG==="en"?"Post before you're ready":"Postează înainte să te simți gata",emoji:"🚀",text:LANG==="en"?"Confidence is often created after action, not before it. Start messy, then improve.":"Încrederea apare de multe ori după acțiune, nu înainte. Începe imperfect și ajustează pe parcurs.",hashtags:["#mindset","#creatorjourney","#progress"]},
+      {title:LANG==="en"?"Consistency beats intensity":"Consistența bate intensitatea",emoji:"💫",text:LANG==="en"?"One honest post today can do more than a perfect strategy you keep postponing.":"O postare sinceră azi poate valora mai mult decât o strategie perfectă pe care o tot amâni.",hashtags:["#consistency","#buildinpublic","#motivationdaily"]}
+    ],
+    chaos:[
+      {title:LANG==="en"?"Today's vibe: controlled chaos":"Vibe-ul de azi: controlled chaos",emoji:"🌀",text:LANG==="en"?"What if your next post was just one strange thought, one emoji, and zero overthinking? Let's normalize weird brilliance.":"Ce-ar fi dacă următoarea ta postare ar fi doar un gând ciudat, un emoji și zero overthinking? Hai să normalizăm genialitatea weird.",hashtags:["#randomchaos","#internetenergy","#weirdbutgood"]},
+      {title:LANG==="en"?"No niche, just vibes":"Fără nișă, doar vibes",emoji:"😄",text:LANG==="en"?"Maybe the algorithm is just a tiny goblin that wants surprise. Give it surprise.":"Poate algoritmul e doar un goblin mic care vrea surprize. Dă-i surprize.",hashtags:["#chaosmarketing","#vibesonly","#scrollstopper"]},
+      {title:LANG==="en"?"Unexpectedly iconic":"Ironic, dar iconic",emoji:"⚡",text:LANG==="en"?"Post the thought that makes zero sense at first glance and 100% sense to your people.":"Postează gândul care la prima vedere n-are sens, dar pentru oamenii tăi are 100% sens.",hashtags:["#randomcontent","#creativechaos","#brandpersonality"]}
+    ]
+  };
+
+  const pool=bank[lazyCategory]||bank.funny;
+  let pick=pool[Math.floor(Math.random()*pool.length)];
+  if(force && pool.length>1 && lazyGenerated){
+    let guard=0;
+    while(pick.title===lazyGenerated.title && guard<8){pick=pool[Math.floor(Math.random()*pool.length)];guard++;}
+  }
+  lazyGenerated={...pick,category:lazyCategory};
+  const out=document.getElementById('lazyOutput');
+  if(out) out.innerHTML=renderLazyOutput();
+  toast(LANG==="en"?"Idea generated!":"Idee generată!");
 }
 
 // ═══════════════════════════════════════════════════════════════
