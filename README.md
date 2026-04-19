@@ -1,6 +1,6 @@
 # 🎨 ALPis Content Studio
 
-A web-based content creation platform designed to help users generate, adapt, and manage digital content for multiple platforms in one place.
+A web-based content creation platform that helps users generate, adapt, and manage digital content for multiple channels from one interface.
 
 🔗 **Live Demo:** https://laurandreea10.github.io/ALPis-CONTENT-STUDIO/
 
@@ -8,67 +8,140 @@ A web-based content creation platform designed to help users generate, adapt, an
 
 ## 🚀 Overview
 
-ALPis Content Studio is a centralized interface that combines multiple content creation tools into a single workflow.
+ALPis Content Studio is a centralized UI that groups content tools in one place:
 
-It allows users to quickly generate:
+- social captions
+- hashtags
+- ad text
+- video scripts
+- brand assets (flyers, banners, palettes)
 
-* social media captions
-* hashtags
-* marketing text
-* video scripts
-* branding materials
-
-The goal is to simulate a **modern AI-powered content production environment**.
+The current build is intentionally front-end only and simulates an AI-assisted workflow.
 
 ---
 
-## 🧩 Features
+## ✨ Features
 
-* ✍️ Text adaptation for multiple platforms
-* 🏷️ Caption & hashtag generator
-* 📢 Bio & CTA generator
-* 🖼️ Image tools & thumbnail editor
-* 🎬 Video script generator
-* 📊 Ad & marketing content generator
-* 🎨 Branding assets (flyers, banners, presentations)
-* 🌍 Multi-language support (RO / EN)
-* 📱 Responsive UI with sidebar navigation
+- ✍️ Text adaptation for multiple platforms
+- 🏷️ Caption & hashtag generation
+- 📢 Bio & CTA generation
+- 🖼️ Image tools & thumbnail controls
+- 🎬 Video scripting assistant
+- 📊 Marketing/ad generation blocks
+- 🌍 Bilingual UI (RO / EN)
+- 📱 Responsive sidebar layout
 
 ---
 
-## 🖥️ Preview
+## 🧭 How it works
 
-(Add screenshots here)
+1. Pick a tool from the left navigation.
+2. Fill in the short form inputs.
+3. Generate output blocks (text/image/script).
+4. Copy, regenerate, and iterate.
+
+The app is organized as a modular single-page interface where each tool has its own render function and shared utility helpers.
+
+---
+
+## 🏗️ Architecture
+
+This repository currently contains a single static entry point:
+
+- `index.html` – structure, styles, i18n dictionary, UI components, and behavior.
+
+Major architecture blocks inside `index.html`:
+
+- global design tokens and CSS utilities
+- navigation builder + view switcher
+- per-tool render functions
+- shared helpers (toast, copy, language switching)
+
+---
+
+## ♿ Accessibility improvements included
+
+- `aria-label` for icon-only actions (including mobile menu)
+- visible `:focus-visible` states for keyboard users
+- skip link for direct main-content navigation
+- semantic landmarks (`nav`, `main`) improved with labels/attributes
+- keyboard enhancement: `Esc` closes the mobile sidebar
+
+---
+
+## 🔎 SEO & Share preview improvements included
+
+- `meta description`
+- Open Graph (`og:title`, `og:description`, `og:image`, `og:url`)
+- Twitter card metadata
+- `theme-color`
+- inline SVG favicon
+- simple `SoftwareApplication` JSON-LD schema
+
+---
+
+## 🖼️ Preview
+
+> Replace the placeholders below with real captures from your deployed app.
+
+- `docs/screenshots/dashboard.png`
+- `docs/screenshots/ad-generator.png`
+- `docs/screenshots/video-script.png`
+- `docs/screenshots/image-tools.png`
+- `docs/screenshots/mobile-sidebar.png`
+
+For best first impression, also add:
+
+- 1 short GIF with the main flow (`select tool -> generate -> copy`)
 
 ---
 
 ## ⚙️ Tech Stack
 
-* HTML
-* CSS
-* JavaScript
-* GitHub Pages (deployment)
+- HTML
+- CSS
+- JavaScript
+- GitHub Pages
 
 ---
 
-## 🧠 Key Concepts
+## ⚠️ Known limitations
 
-* Modular UI design
-* Content generation workflows
-* UX focused on productivity tools
-* Simulation of AI-assisted content creation
+- No backend persistence (state resets on reload)
+- No real model/API integration by default
+- Very large single-file architecture (harder long-term maintenance)
+- Limited automated test coverage
 
 ---
 
-## 📌 Future Improvements
+## 🧪 Minimal test plan
 
-* Real AI integration (OpenAI API)
-* User authentication
-* Saving/exporting projects
-* Backend support
+- Smoke test top 5 tools (adapt, hashtag, caption, video, ads)
+- Keyboard-only navigation test
+- Mobile sidebar open/close + escape behavior
+- Meta tags validation on deployed page
+- Lighthouse pass target for Accessibility/SEO baseline
+
+See full checklist in [`TEST_PLAN.md`](TEST_PLAN.md).
+
+---
+
+## 🗺️ Project maturity
+
+This repo now includes:
+
+- roadmap: [`ROADMAP.md`](ROADMAP.md)
+- changelog: [`CHANGELOG.md`](CHANGELOG.md)
+- issue template: [`.github/ISSUE_TEMPLATE/bug_report.md`](.github/ISSUE_TEMPLATE/bug_report.md)
+- license: [`LICENSE`](LICENSE)
+
+Recommended GitHub sidebar setup:
+
+- **Description:** “AI-inspired content studio for multi-platform text, visual and video workflows.”
+- **Topics:** `content-studio`, `social-media-tools`, `javascript`, `frontend`, `ai-workflow`, `productivity`, `single-page-app`
 
 ---
 
 ## 🎯 Purpose
 
-This project was built to explore how a modern content creation platform could be structured and experienced in the browser.
+The project explores how a modern content creation product could feel in-browser, with fast iteration and many utility flows in one place.

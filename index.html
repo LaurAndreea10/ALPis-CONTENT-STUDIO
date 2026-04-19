@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ALPis — Content Studio</title>
+<meta name="description" content="ALPis Content Studio este o platformă web pentru creare rapidă de conținut social media, branding și materiale video într-un workflow unificat.">
+<meta name="theme-color" content="#08080e">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="12" fill="%2308080e"/%3E%3Ctext x="50%25" y="54%25" dominant-baseline="middle" text-anchor="middle" font-size="34" fill="%23ff3366" font-family="Arial, sans-serif"%3EA%3C/text%3E%3C/svg%3E'>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ro_RO">
+<meta property="og:title" content="ALPis — Content Studio">
+<meta property="og:description" content="Creează caption-uri, hashtaguri, scripturi video și materiale de branding într-un singur studio web.">
+<meta property="og:image" content="https://laurandreea10.github.io/ALPis-CONTENT-STUDIO/preview.png">
+<meta property="og:url" content="https://laurandreea10.github.io/ALPis-CONTENT-STUDIO/">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -39,6 +49,9 @@ body{background:var(--bg);color:var(--t1);font-family:var(--font);overflow-x:hid
   background:transparent;color:var(--t3);font-size:12px;font-weight:500;font-family:var(--font);
   cursor:pointer;text-align:left;border-left:3px solid transparent;transition:all 0.12s ease}
 .nav-btn:hover{background:rgba(255,51,102,0.04)}
+
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{box-shadow:0 0 0 3px rgba(10,240,176,0.2)}
 .nav-btn.active{background:rgba(255,51,102,0.07);color:var(--accent);border-left-color:var(--accent)}
 .nav-btn .icon{width:20px;text-align:center;font-size:14px;flex-shrink:0}
 .mob-toggle{display:none;position:fixed;top:10px;left:10px;z-index:999;width:40px;height:40px;
@@ -110,6 +123,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10
   font-size:13px;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all 0.3s ease;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
 
+.skip-link{position:fixed;left:10px;top:-40px;z-index:1500;background:#fff;color:#000;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none}
+.skip-link:focus{top:10px}
+
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:3px}
 
@@ -160,16 +176,18 @@ input[type=color]{border:none;border-radius:6px;cursor:pointer;background:transp
 @media(max-width:900px){.lazy-shell{grid-template-columns:1fr}}
 
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ALPis Content Studio","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://laurandreea10.github.io/ALPis-CONTENT-STUDIO/","description":"Studio web pentru creare și adaptare de conținut digital multi-platformă."}</script>
 </head>
 <body>
+<a href="#main" class="skip-link">Sari la conținut</a>
 
 <div class="grid-bg"></div>
 <div class="orb o1"></div>
 <div class="orb o2"></div>
 
-<button class="mob-toggle" onclick="toggleSidebar()">☰</button>
+<button class="mob-toggle" onclick="toggleSidebar()" aria-label="Deschide meniul de navigare" aria-controls="sidebar" aria-expanded="false">☰</button>
 
-<nav class="sidebar" id="sidebar">
+<nav class="sidebar" id="sidebar" aria-label="Navigare principală">
   <div class="sidebar-logo">
     <h1><span class="a">A</span><span class="l">L</span><span class="p2">P</span><span class="i2">i</span><span class="s2">s</span></h1>
     <small>CONTENT STUDIO</small>
@@ -183,11 +201,35 @@ input[type=color]{border:none;border-radius:6px;cursor:pointer;background:transp
   </div>
 </nav>
 
-<main class="main" id="main"></main>
+<main class="main" id="main" tabindex="-1" role="main" aria-live="polite"></main>
 
 <div class="toast" id="toast">Copiat!</div>
 
 <script>
+
+function applyAccessibility(){
+  document.querySelectorAll('button').forEach(btn=>{
+    if(!btn.getAttribute('aria-label')){
+      const text=(btn.textContent||'').trim();
+      if(["☰","◫","✕","↺","↓","▶"].includes(text) || text.length<=2){
+        const map={"☰":"Deschide meniul","◫":"Copiază","✕":"Închide","↺":"Resetează","↓":"Descarcă","▶":"Rulează"};
+        btn.setAttribute('aria-label', map[text] || 'Acțiune');
+      }
+    }
+  });
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    const s=document.getElementById('sidebar');
+    if(s && s.classList.contains('open')){
+      s.classList.remove('open');
+      const m=document.querySelector('.mob-toggle');
+      if(m)m.setAttribute('aria-expanded','false');
+    }
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════
 // INTERNATIONALIZATION
 // ═══════════════════════════════════════════════════════════════
@@ -236,6 +278,7 @@ function setLang(lang){
   document.getElementById("langRo").className="chip"+(lang==="ro"?" on":"");
   document.getElementById("langEn").className="chip"+(lang==="en"?" on":"");
   buildNav();renderView();
+applyAccessibility();
 }
 
 const PLATFORMS = {
@@ -375,9 +418,15 @@ function buildNav(){
 
 function switchView(id){
   currentView=id; buildNav(); renderView();
+applyAccessibility();
   document.getElementById("sidebar").classList.remove("open");
 }
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function toggleSidebar(){
+  const sidebar=document.getElementById("sidebar");
+  const isOpen=sidebar.classList.toggle("open");
+  const btn=document.querySelector(".mob-toggle");
+  if(btn) btn.setAttribute("aria-expanded", String(isOpen));
+}
 
 // ═══════════════════════════════════════════════════════════════
 // RENDER
@@ -394,6 +443,7 @@ function renderView(){
     emailmk:renderEmailMk,podcast:renderPodcast,calendarai:renderCalendarAI,chatbot:renderChatbot,
     resizer:renderResizer,fonts:renderFonts,checklist:renderChecklist,translate:renderTranslate};
   m.innerHTML=`<div class="view active">${(renders[currentView]||renders.adapt)()}</div>`;
+  applyAccessibility();
   if(currentView==="image")initImageHandlers();
   if(currentView==="palette")initPaletteHandlers();
 }
@@ -1214,6 +1264,7 @@ function renderVideo(){
 function addVideoSec(){
   videoSections.push({id:uid(),type:"body",text:"",duration:10,character:"",voice:"conversational",sfx:"",transition:"cut"});
   renderView();
+applyAccessibility();
 }
 
 function generateVideo(){
@@ -1264,6 +1315,7 @@ ${voiceover}`;
 
   videoGenerated={prompt,voiceover,storyboard:storyboardLines};
   renderView();
+applyAccessibility();
   toast("Script video generat!");
 }
 
@@ -1692,6 +1744,7 @@ function addSchedule(){
   const date=document.getElementById("schedDate").value;const time=document.getElementById("schedTime").value;
   if(!text.trim()||!date)return;
   scheduleItems.push({id:uid(),text:text.trim(),platform:plat,date,time,done:false});renderView();
+applyAccessibility();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2719,6 +2772,7 @@ function addPrezSlide(){
   prezSlides=titles.map((t,i)=>({title:t,content:contents[i]||""}));
   prezSlides.push({title:"Slide nou",content:""});
   renderView();
+applyAccessibility();
 }
 function removePrezSlide(idx){
   const titles=[...document.querySelectorAll('.prez-title')].map(e=>e.value);
@@ -2726,6 +2780,7 @@ function removePrezSlide(idx){
   prezSlides=titles.map((t,i)=>({title:t,content:contents[i]||""}));
   prezSlides.splice(idx,1);
   renderView();
+applyAccessibility();
 }
 
 function applyPrezTemplate(tplId){
@@ -2736,7 +2791,8 @@ function applyPrezTemplate(tplId){
     education:{slides:[{title:LANG==="en"?"Introduction":"Introducere",content:LANG==="en"?"• Topic overview\n• Learning objectives":"• Prezentare subiect\n• Obiective"},{title:LANG==="en"?"Core Concepts":"Concepte",content:LANG==="en"?"• Definitions\n• Key principles":"• Definiții\n• Principii cheie"},{title:LANG==="en"?"Deep Dive":"Aprofundare",content:LANG==="en"?"• Case studies\n• Best practices":"• Studii de caz\n• Bune practici"},{title:LANG==="en"?"Summary":"Rezumat",content:LANG==="en"?"• Key takeaways\n• Questions?":"• Concluzii\n• Întrebări?"}]}
   };
   const tpl=templates[tplId];
-  if(tpl){prezSlides=tpl.slides.map(s=>({...s}));renderView();toast(LANG==="en"?"Template applied!":"Șablon aplicat!")}
+  if(tpl){prezSlides=tpl.slides.map(s=>({...s}));renderView();
+applyAccessibility();toast(LANG==="en"?"Template applied!":"Șablon aplicat!")}
 }
 
 function suggestPrezText(idx){
@@ -3937,6 +3993,7 @@ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 // ═══════════════════════════════════════════════════════════════
 buildNav();
 renderView();
+applyAccessibility();
 setLang("ro");
 setTimeout(()=>{if(currentView==="preview")updatePreview()},100);
 </script>
